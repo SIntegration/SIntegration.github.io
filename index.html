@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MEOWFI Meme Coin 🚀</title>
+  <style>
+    body {
+      background: url('/mnt/data/dd.png') no-repeat center center fixed;
+      background-size: cover;
+      color: lime;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 1);
+      z-index: -1;
+    }
+    h1 {
+      font-size: 60px;
+      color: yellow;
+      text-shadow: 2px 2px red;
+      animation: blink 1s infinite;
+    }
+    a {
+      color: aqua;
+      text-decoration: none;
+      font-size: 20px;
+    }
+    .gif {
+      margin-top: 20px;
+    }
+    .button {
+      background-color: magenta;
+      color: white;
+      padding: 10px;
+      border: 3px double yellow;
+      cursor: pointer;
+      font-size: 20px;
+      margin: 10px;
+    }
+    .button:hover {
+      background-color: red;
+    }
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0; }
+    }
+    .footer {
+      margin-top: 50px;
+      font-size: 12px;
+      color: gray;
+    }
+    .price {
+      font-size: 30px;
+      color: cyan;
+      margin: 20px 0;
+    }
+    .counter {
+      font-size: 18px;
+      color: orange;
+    }
+    .converter, .solConverter {
+      margin: 20px;
+      font-size: 18px;
+    }
+    .converter input, .solConverter input {
+      padding: 5px;
+      margin: 5px;
+      font-size: 16px;
+    }
+    .bonding {
+      margin-top: 30px;
+      font-size: 16px;
+      color: lightgreen;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>MEOWFI</h1>
+  <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="Cat Gif" class="gif">
+
+  <p>🚀 Der erste Meme-Coin der dich wirklich <strong>to the moon</strong> katapultiert!</p>
+
+  <div class="price" id="solPrice">SOL Price: Loading...</div>
+  <div class="price" id="meowfiPrice">MEOWFI Price: Loading...</div>
+
+  <div class="converter">
+    <input type="number" id="usdInput" placeholder="USD Betrag" oninput="convertToMeow()"> USD ↔ 
+    <input type="number" id="meowInput" placeholder="MEOWFI Anzahl" oninput="convertToUSD()"> MEOWFI
+    <div id="conversionResult"></div>
+  </div>
+
+  <div class="solConverter">
+    <input type="number" id="solInput" placeholder="SOL Betrag" oninput="convertSolToMeow()"> SOL ↔ 
+    <input type="number" id="meowFromSolInput" placeholder="MEOWFI Anzahl" oninput="convertMeowToSol()"> MEOWFI
+    <div id="solConversionResult"></div>
+  </div>
+
+  <p>Token Infos:</p>
+  <ul style="list-style-type:none;">
+    <li>Total Supply: 1.000.000.000 MEOW</li>
+    <li>Contract: <a href="https://solscan.io/token/5t9Pbp9yaAbZF21119XsHWQYm48TR9cpd2d7LNRRpump" target="_blank">Hier auf Solscan</a></li>
+    <li>Launch: 2025</li>
+  </ul>
+
+  <button class="button" onclick="window.open('https://phantom.com/tokens/solana/5t9Pbp9yaAbZF21119XsHWQYm48TR9cpd2d7LNRRpump?referralId=4jufl09bbx5', '_blank')">BUY NOW</button>
+
+  <p><img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="Rocket gif"></p>
+
+  <h2 style="animation: blink 0.7s infinite; color: hotpink;">"BUY THE DIP! HODL LIKE A LEGEND!"</h2>
+  <h2 style="animation: blink 0.5s infinite; color: cyan;">"TO THE MOON 🚀 MEOWFI 4 LIFE!"</h2>
+
+  <p class="counter">Visitors since 2025: <span id="visitCount">0</span></p>
+
+  <div class="bonding">Bonding Curve Status: Coming soon 📈</div>
+
+  <p class="footer">
+    <a href="https://github.com/deinuser/meowfi-whitepaper" target="_blank">📄 Whitepaper</a><br>
+    Disclaimer: This is a meme coin for entertainment purposes only. No financial advice. No promises. Pure chaos.
+  </p>
+
+<script>
+  let solPrice = 0;
+  let meowfiPrice = 0;
+
+  async function loadSolPrice() {
+    try {
+      const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
+      const data = await res.json();
+      solPrice = data.solana.usd;
+      document.getElementById('solPrice').innerText = 'SOL Price: $' + solPrice;
+    } catch (e) {
+      document.getElementById('solPrice').innerText = 'SOL Price: Error loading';
+    }
+  }
+
+  async function loadMeowfiPrice() {
+    // Preis aus Holdings berechnen: 8,649,086.49 MEOW = 44.86 USD
+    meowfiPrice = 44.86 / 8649086.49;
+    document.getElementById('meowfiPrice').innerText = 'MEOWFI Price: $' + meowfiPrice.toFixed(8);
+  }
+
+  function convertToMeow() {
+    let usd = parseFloat(document.getElementById('usdInput').value) || 0;
+    let meow = usd / meowfiPrice;
+    document.getElementById('conversionResult').innerText = usd + ' USD ≈ ' + meow.toFixed(2) + ' MEOWFI';
+  }
+
+  function convertToUSD() {
+    let meow = parseFloat(document.getElementById('meowInput').value) || 0;
+    let usd = meow * meowfiPrice;
+    document.getElementById('conversionResult').innerText = meow + ' MEOWFI ≈ $' + usd.toFixed(2);
+  }
+
+  function convertSolToMeow() {
+    let sol = parseFloat(document.getElementById('solInput').value) || 0;
+    let usd = sol * solPrice;
+    let meow = usd / meowfiPrice;
+    document.getElementById('solConversionResult').innerText = sol + ' SOL ≈ ' + meow.toFixed(2) + ' MEOWFI';
+  }
+
+  function convertMeowToSol() {
+    let meow = parseFloat(document.getElementById('meowFromSolInput').value) || 0;
+    let usd = meow * meowfiPrice;
+    let sol = usd / solPrice;
+    document.getElementById('solConversionResult').innerText = meow + ' MEOWFI ≈ ' + sol.toFixed(4) + ' SOL';
+  }
+
+  loadSolPrice();
+  loadMeowfiPrice();
+  setInterval(loadSolPrice, 60000);
+  setInterval(loadMeowfiPrice, 60000);
+</script>
+
+</body>
+</html>
