@@ -142,7 +142,6 @@
   }
 
   async function loadMeowfiPrice() {
-    // Preis aus Holdings berechnen: 8,649,086.49 MEOW = 44.86 USD
     meowfiPrice = 44.86 / 8649086.49;
     document.getElementById('meowfiPrice').innerText = 'MEOWFI Price: $' + meowfiPrice.toFixed(8);
   }
@@ -173,10 +172,25 @@
     document.getElementById('solConversionResult').innerText = meow + ' MEOWFI ≈ ' + sol.toFixed(4) + ' SOL';
   }
 
+  function updateVisitCount() {
+    let count = localStorage.getItem('visitCount');
+    if (!count) {
+      count = 0;
+    }
+    count = parseInt(count) + 1;
+    localStorage.setItem('visitCount', count);
+    document.getElementById('visitCount').innerText = count;
+  }
+
+  // Preise laden
   loadSolPrice();
   loadMeowfiPrice();
   setInterval(loadSolPrice, 60000);
   setInterval(loadMeowfiPrice, 60000);
+
+  // Besucherzähler hochzählen
+  updateVisitCount();
+
 </script>
 
 </body>
